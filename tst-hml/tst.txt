@@ -1,0 +1,43 @@
+stages:
+  - build
+
+build:
+  stage: build  
+  tags:
+    - shell
+  script:
+    - |
+        if [ -e "/var/www/html/tst/" ]
+        then
+          echo " o diretorio existe"
+          #  echo $PSWD | sudo -S rsync -avh --progress tst/* /var/www/html/tst/
+          # 
+          # sudo -A rsync -avh --progress tst/* /var/www/html/tst/
+          # 
+          zenity --password | sudo -S rsync -avh --progress tst/* /var/www/html/tst/
+          # if [ $? -eq 0 ]
+          # then
+          #   echo "OK"
+          # else
+          #   echo "Operação cancelada pelo usuário."
+          # fi
+        else
+          echo " o diretorio não existe, vamos fazer deploy"
+          PS=$(zenity --password)
+          # echo $PSWD | sudo -S mkdir -p /var/www/html/tst/
+          # echo $PSWD | sudo -S rsync -avh --progress tst/* /var/www/html/tst/
+          # 
+          # sudo -A mkdir -p /var/www/html/tst/
+          # sudo -A rsync -avh --progress tst/* /var/www/html/tst/  
+          # 
+          echo $PS | sudo -S mkdir -p /var/www/html/tst/
+          echo $PS | sudo -S rsync -avh --progress tst/* /var/www/html/tst/
+        fi
+
+
+
+
+
+
+
+

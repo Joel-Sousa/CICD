@@ -1,0 +1,26 @@
+stages:
+  - build
+
+build:
+  stage: build  
+  tags:
+    - shell
+  only: 
+    - merge_requests
+    - hml
+  script:
+    - |
+        if [ -e "/var/www/html/tst/" ]
+        then
+          echo " o diretorio existe"
+          zenity --password | sudo -S rsync -avh --progress tst/* /var/www/html/tst/
+        else
+          echo " o diretorio não existe, vamos fazer deploy"
+          PS=$(zenity --password)
+          echo $PS | sudo -S mkdir -p /var/www/html/tst/
+          echo $PS | sudo -S rsync -avh --progress tst/* /var/www/html/tst/
+        fi
+
+
+
+
